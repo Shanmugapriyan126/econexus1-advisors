@@ -41,23 +41,7 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] text-[#191c1d] flex flex-col selection:bg-[#10b981]/20 selection:text-[#064e3b]">
-      {/* Top Regional Announcement Ribbon */}
-      <div className="bg-[#00241a] text-emerald-300 text-[11px] md:text-xs py-2 px-4 border-b border-[#064e3b] z-50">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1 text-center sm:text-left font-medium">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#10b981] animate-ping" />
-            <span>EcoNexus Advisors • Industrial ESG & Compliance Hub • Kangeyam, Tamil Nadu</span>
-          </div>
-          <div className="flex items-center gap-4 text-gray-300">
-            <a href={`tel:${COMPANY_CONTACT.phone}`} className="hover:text-white flex items-center gap-1 transition-colors">
-              <Phone className="w-3 h-3 text-[#10b981]" /> {COMPANY_CONTACT.phone}
-            </a>
-            <span className="hidden md:inline">|</span>
-            <a href={`mailto:${COMPANY_CONTACT.email}`} className="hover:text-white hidden md:flex items-center gap-1 transition-colors">
-              <Mail className="w-3 h-3 text-[#10b981]" /> {COMPANY_CONTACT.email}
-            </a>
-          </div>
-        </div>
+      
       </div>
 
       {/* Main Sticky Navbar */}
