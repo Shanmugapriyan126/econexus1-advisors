@@ -7,6 +7,8 @@ interface ConsultationModalProps {
   onClose: () => void;
   defaultService?: string;
 }
+const GOOGLE_SCRIPT_URL =
+  'https://script.google.com/macros/s/AKfycbyHns2iiso1mVK5w-8rgewvLKLXoYLm8N5mSXZADP9BI3HKBmCx_MU226guYvjqD9TW/exec';
 
 export const ConsultationModal: React.FC<ConsultationModalProps> = ({
   isOpen,
@@ -23,14 +25,39 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-    }, 500);
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+
+  try {
+    const formData = new URLSearchParams();
+
+    formData.append('type', 'Consultation Request');
+    formData.append('name', name);
+    formData.append('company', company);
+    formData.append('phone', phone);
+    formData.append('email', email);
+    formData.append('service', service);
+
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors',
+    });
+
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+
+  } catch (error) {
+    console.error('Consultation submission error:', error);
+
+    setIsSubmitting(false);
+
+    alert(
+      'Unable to submit your consultation request. Please try again or contact us directly.'
+    );
+  }
+};
 
   const handleClose = () => {
     setIsSubmitted(false);
