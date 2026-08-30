@@ -16,6 +16,8 @@ import { COMPANY_CONTACT, SERVICES_DATA } from '../data/mockData';
 interface AssessmentFormProps {
   initialService?: string;
 }
+const GOOGLE_SCRIPT_URL =
+  'https://script.google.com/macros/s/AKfycbyHns2iiso1mVK5w-8rgewvLKLXoYLm8N5mSXZADP9BI3HKBmCx_MU226guYvjqD9TW/exec';
 
 export const AssessmentForm: React.FC<AssessmentFormProps> = ({ initialService }) => {
   const [companyName, setCompanyName] = useState('');
@@ -38,18 +40,46 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({ initialService }
     }
   }, [initialService]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    // Simulate instant secure processing
-    setTimeout(() => {
-      const generatedRef = `ENA-${Math.floor(100000 + Math.random() * 900000)}`;
-      setReferenceId(generatedRef);
-      setIsSubmitting(false);
-      setIsSuccess(true);
-    }, 600);
-  };
+  try {
+    const formData = new URLSearchParams();
+
+    formData.append('type', 'Assessment Request');
+    formData.append('name', contactPerson);
+    formData.append('company', companyName);
+    formData.append('phone', phone);
+    formData.append('email', email);
+    formData.append('industry', industry);
+    formData.append('service', serviceRequired);
+    formData.append('location', facilityLocation);
+    formData.append('message', message);
+
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors',
+    });
+
+    const generatedRef =
+      `ENA-${Math.floor(100000 + Math.random() * 900000)}`;
+
+    setReferenceId(generatedRef);
+    setIsSubmitting(false);
+    setIsSuccess(true);
+
+  } catch (error) {
+    console.error('Submission error:', error);
+
+    setIsSubmitting(false);
+
+    alert(
+      'Unable to submit your request. Please try again or contact us directly.'
+    );
+  }
+};
 
   const handleReset = () => {
     setIsSuccess(false);
